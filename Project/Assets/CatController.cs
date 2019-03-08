@@ -9,8 +9,10 @@ public class CatController : MonoBehaviour {
 	private SpriteRenderer rend;
 	private Animator anim;
 	public float speed = 2.0f;
-	private bool grounded = false;
-	private bool jump = false;
+	public LayerMask groundLayer;
+	private bool grounded = true;
+	private float jumpForce = 300f;
+	private bool jump = true;
 	public Rigidbody2D rigidBody;
 	// Use this for initialization
 	void Start()
@@ -35,16 +37,24 @@ public class CatController : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		if (Input.GetKey (KeyCode.Space) && grounded) {
+		if (Input.GetKey (KeyCode.Space) && PlayerGrounded()) {
 			grounded = false;
-			rigidBody.AddForce (Vector3.up, ForceMode2D.Impulse);
+			rigidBody.AddForce (new Vector2 (0f, jumpForce));
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
-		if(other.gameObject.CompareTag("ground")){
-			grounded = true;
+	bool PlayerGrounded () {
+		Vector2 catPosition = transform.position;
+		Vector2 catDirection = Vector2.down;
+		float distance = 1.0f;
+
+		Debug.DrawRay(catPosition, catDirection, Color.green);
+
+		RaycastHit2D raycastHit = Physics2D.Raycast (catPosition, catDirection, distance, groundLayer);
+		if (raycastHit.collider != null) {
+			return true;
 		}
 
+		return false;
 	}
 }
