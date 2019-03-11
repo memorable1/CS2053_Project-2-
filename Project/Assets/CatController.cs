@@ -10,7 +10,7 @@ public class CatController : MonoBehaviour {
 	private Animator anim;
 	public float speed = 2.0f;
 	public LayerMask groundLayer;
-	private bool grounded = true;
+	private bool grounded = true;//weuafhwiulfiu
 	private float jumpForce = 300f;
 	private bool jump = true;
 	public Rigidbody2D rigidBody;
